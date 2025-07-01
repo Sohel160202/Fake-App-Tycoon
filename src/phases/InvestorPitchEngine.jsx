@@ -23,6 +23,36 @@ const sampleQuestions = [
       { text: "Premium tier with exclusive NFTs", traits: ['buzzwords', 'hype'] },
       { text: "Not sure yet", traits: ['bugs'] }
     ]
+  },
+  {
+    id: 'team',
+    question: "Tell us about your team.",
+    options: [
+      { text: "It's just me and a dream", traits: ['hype'] },
+      { text: "We outsourced everything to a DAO", traits: ['buzzwords'] },
+      { text: "Three devs, one PM, and a legal intern", traits: ['reputation', 'metrics'] },
+      { text: "Our AI writes the code", traits: ['buzzwords', 'bugs'] }
+    ]
+  },
+  {
+    id: 'competition',
+    question: "How do you compare to competitors?",
+    options: [
+      { text: "We're the Uber of everything", traits: ['buzzwords', 'hype'] },
+      { text: "We pivot faster than they can load", traits: ['hype'] },
+      { text: "We respect privacy and scale wisely", traits: ['reputation', 'metrics'] },
+      { text: "We haven't checked, tbh", traits: ['bugs'] }
+    ]
+  },
+  {
+    id: 'vision',
+    question: "Where do you see this app in 5 years?",
+    options: [
+      { text: "Running on Mars using quantum chips", traits: ['buzzwords', 'hype'] },
+      { text: "Empowering communities with micro-ownership", traits: ['reputation', 'hype'] },
+      { text: "Making passive income while we sleep", traits: ['metrics'] },
+      { text: "Probably shut down and rebranded", traits: ['bugs'] }
+    ]
   }
 ];
 

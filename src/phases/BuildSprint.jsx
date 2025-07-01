@@ -36,15 +36,20 @@ export default function BuildSprint() {
   const setPhase = useGameStore((s) => s.setPhase);
 
   const toggleFeature = (name) => {
-    setSelected((prev) =>
-      prev.includes(name) ? prev.filter((f) => f !== name) : [...prev, name]
-    );
+    setSelected((prev) => {
+      if (prev.includes(name)) return prev.filter((f) => f !== name);
+      if (prev.length >= 3) return prev;
+      return [...prev, name];
+    });
   };
 
   const handleSubmit = () => {
     const chosen = featureChoices.filter((f) => selected.includes(f.name));
-    chosen.forEach(({ effects }) => {
+    chosen.forEach(({ effects, type }) => {
       Object.entries(effects).forEach(([key, value]) => updateStat(key, value));
+      if (type === 'fake' && Math.random() < 0.3) {
+        updateStat('reputation', -1);
+      }
     });
     setPhase('hype');
   };
@@ -72,10 +77,14 @@ export default function BuildSprint() {
         ))}
       </div>
 
+      <p className="text-sm text-gray-400 mt-2">
+        Selected {selected.length} of 3 max
+      </p>
+
       <button
         disabled={selected.length < 2}
         onClick={handleSubmit}
-        className="mt-8 bg-green-600 hover:bg-green-700 px-6 py-2 rounded-xl disabled:opacity-50"
+        className="mt-4 bg-green-600 hover:bg-green-700 px-6 py-2 rounded-xl disabled:opacity-50"
       >
         🚀 Launch Sprint
       </button>

@@ -9,18 +9,21 @@ import HypeMachine from '../phases/HypeMachine';
 import CrisisControl from '../phases/CrisisControl';
 import GameEnd from '../phases/GameEnd';
 import ChaosEventEngine from '../components/ChaosEventEngine';
+import HUD from './HUD';
 
 export default function GameController() {
   const currentPhase = useGameStore((state) => state.currentPhase);
   const [showChaos, setShowChaos] = useState(false);
-  const [nextPhase, setNextPhase] = useState(null);
 
   useEffect(() => {
     if (['build', 'hype', 'crisis'].includes(currentPhase)) {
-      const shouldTriggerChaos = Math.random() < 0.5;
-      if (shouldTriggerChaos) {
-        setShowChaos(true);
-      }
+      const timer = setTimeout(() => {
+        const shouldTriggerChaos = Math.random() < 0.5;
+        if (shouldTriggerChaos) {
+          setShowChaos(true);
+        }
+      }, 400);
+      return () => clearTimeout(timer);
     }
   }, [currentPhase]);
 
@@ -45,5 +48,10 @@ export default function GameController() {
     }
   };
 
-  return <>{showChaos ? <ChaosEventEngine onComplete={handleChaosComplete} /> : renderPhase()}</>;
+  return (
+    <>
+      <HUD />
+      {showChaos ? <ChaosEventEngine onComplete={handleChaosComplete} /> : renderPhase()}
+    </>
+  );
 }

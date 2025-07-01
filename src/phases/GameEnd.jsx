@@ -1,35 +1,16 @@
 // src/phases/GameEnd.jsx
 import React from 'react';
 import useGameStore from '../store/GameStore';
+import { endings } from '../data/endings';
 
 export default function GameEnd() {
   const { funding, reputation, hype, bugs, users, resetGame } = useGameStore();
 
-  let title = '🤔 Something Weird Happened';
-  let message = 'Your startup journey was... chaotic.';
+  const finalStats = { funding, reputation, hype, bugs, users };
+  const matchedEnding = endings.find(e => e.condition(finalStats));
 
-  if (funding >= 10 && reputation >= 7) {
-    title = '🚀 IPO Billionaire';
-    message = 'You faked it just enough to make it. Wall Street loves you.';
-  } else if (reputation <= 1 && bugs >= 5) {
-    title = '💥 Cancelled & Exposed';
-    message = 'A viral thread destroyed your company overnight.';
-  } else if (hype >= 10 && users <= 2) {
-    title = '🔥 Hype Machine, No Substance';
-    message = 'Millions knew your name. Nobody used your app.';
-  } else if (reputation >= 6 && funding <= 2 && users >= 5) {
-    title = '🧠 Real Startup Hero';
-    message = 'You accidentally built something that helped people.';
-  } else if (bugs >= 10) {
-    title = '🐞 Bugged Out';
-    message = 'Your app became self-aware and deleted itself.';
-  } else if (funding >= 8 && reputation <= 2) {
-    title = '👔 Silicon Valley Sociopath';
-    message = 'You sold out fast and left faster.';
-  } else if (reputation >= 4 && users >= 8 && bugs <= 3) {
-    title = '🌱 Organic Growth Legend';
-    message = 'Slow and steady won the race. Somehow.';
-  }
+  const title = matchedEnding?.title || '🤔 Something Weird Happened';
+  const message = matchedEnding?.description || 'Your startup journey was... chaotic.';
 
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center bg-black text-white p-6 text-center">

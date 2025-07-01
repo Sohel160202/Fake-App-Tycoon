@@ -1,20 +1,15 @@
-const useGameStore = create((set) => ({
-  // Core App Info
-  appName: '',
+// src/store/GameStore.js
+import { create } from 'zustand';
 
-  // Simulation Stats
+const useGameStore = create((set) => ({
+  appName: '',
   funding: 0,
   hype: 0,
   reputation: 5,
   bugs: 0,
   users: 0,
-  buzzwords: 0,   // <--- Added
-  metrics: 0,     // <--- Added
-
-  // Current Phase
   currentPhase: 'pitch',
 
-  // Actions
   setAppName: (name) => set({ appName: name }),
 
   updateStat: (stat, amount) =>
@@ -30,8 +25,9 @@ const useGameStore = create((set) => ({
       reputation: 5,
       bugs: 0,
       users: 0,
-      buzzwords: 0,  // <--- Reset too
-      metrics: 0,    // <--- Reset too
       currentPhase: 'pitch'
     })
 }));
+
+// ✅ Add this line to fix the issue:
+export default useGameStore;

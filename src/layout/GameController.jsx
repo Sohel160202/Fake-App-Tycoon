@@ -1,5 +1,5 @@
 // src/layout/GameController.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useGameStore from '../store/GameStore';
 
 // Import all phase components
@@ -13,11 +13,19 @@ import ChaosEventEngine from '../components/ChaosEventEngine';
 export default function GameController() {
   const currentPhase = useGameStore((state) => state.currentPhase);
   const [showChaos, setShowChaos] = useState(false);
-  const [afterChaosPhase, setAfterChaosPhase] = useState(null);
+  const [nextPhase, setNextPhase] = useState(null);
 
-  const triggerChaos = (nextPhaseComponent) => {
-    setAfterChaosPhase(nextPhaseComponent);
-    setShowChaos(true);
+  useEffect(() => {
+    if (['build', 'hype', 'crisis'].includes(currentPhase)) {
+      const shouldTriggerChaos = Math.random() < 0.5;
+      if (shouldTriggerChaos) {
+        setShowChaos(true);
+      }
+    }
+  }, [currentPhase]);
+
+  const handleChaosComplete = () => {
+    setShowChaos(false);
   };
 
   const renderPhase = () => {
@@ -25,11 +33,11 @@ export default function GameController() {
       case 'pitch':
         return <InvestorPitchEngine />;
       case 'build':
-        return showChaos ? <ChaosEventEngine onComplete={() => setShowChaos(false)} /> : triggerChaos(<BuildSprint />);
+        return <BuildSprint />;
       case 'hype':
-        return showChaos ? <ChaosEventEngine onComplete={() => setShowChaos(false)} /> : triggerChaos(<HypeMachine />);
+        return <HypeMachine />;
       case 'crisis':
-        return showChaos ? <ChaosEventEngine onComplete={() => setShowChaos(false)} /> : triggerChaos(<CrisisControl />);
+        return <CrisisControl />;
       case 'end':
         return <GameEnd />;
       default:
@@ -37,5 +45,5 @@ export default function GameController() {
     }
   };
 
-  return <>{showChaos ? <ChaosEventEngine onComplete={() => setShowChaos(false)} /> : renderPhase()}</>;
+  return <>{showChaos ? <ChaosEventEngine onComplete={handleChaosComplete} /> : renderPhase()}</>;
 }

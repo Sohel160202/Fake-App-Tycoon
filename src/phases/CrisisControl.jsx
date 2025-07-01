@@ -95,25 +95,44 @@ const crisisEvents = [
   }
 ];
 
+function shuffleArray(array) {
+  return [...array].sort(() => 0.5 - Math.random());
+}
+
 export default function CrisisControl() {
+  const [eventList] = useState(shuffleArray(crisisEvents));
   const [step, setStep] = useState(0);
+  const [skipsRemaining, setSkipsRemaining] = useState(1);
   const updateStat = useGameStore((s) => s.updateStat);
   const setPhase = useGameStore((s) => s.setPhase);
 
   const handleOption = (effects) => {
     Object.entries(effects).forEach(([stat, value]) => updateStat(stat, value));
-    if (step + 1 < crisisEvents.length) {
+    nextEvent();
+  };
+
+  const handleSkip = () => {
+    updateStat('reputation', -2);
+    setSkipsRemaining(skipsRemaining - 1);
+    nextEvent();
+  };
+
+  const nextEvent = () => {
+    if (step + 1 < eventList.length) {
       setStep(step + 1);
     } else {
       setPhase('end');
     }
   };
 
-  const event = crisisEvents[step];
+  const event = eventList[step];
 
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center bg-black text-white p-6">
       <h1 className="text-3xl font-bold mb-4">🧨 Crisis Control</h1>
+      <p className="text-sm text-gray-400 mt-2 mb-2">
+        Crisis {step + 1} of {eventList.length}
+      </p>
       <div className="bg-gray-800 p-6 rounded-xl text-center shadow-lg w-full max-w-xl">
         <p className="text-lg font-medium mb-4">{event.scenario}</p>
         <div className="space-y-3">
@@ -127,6 +146,14 @@ export default function CrisisControl() {
             </button>
           ))}
         </div>
+        {skipsRemaining > 0 && (
+          <button
+            onClick={handleSkip}
+            className="mt-4 text-sm underline text-gray-300 hover:text-red-400"
+          >
+            Skip Crisis (-2 Reputation)
+          </button>
+        )}
       </div>
     </div>
   );

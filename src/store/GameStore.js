@@ -1,6 +1,3 @@
-// src/store/GameStore.js
-import { create } from 'zustand';
-
 const useGameStore = create((set) => ({
   // Core App Info
   appName: '',
@@ -11,6 +8,8 @@ const useGameStore = create((set) => ({
   reputation: 5,
   bugs: 0,
   users: 0,
+  buzzwords: 0,   // <--- Added
+  metrics: 0,     // <--- Added
 
   // Current Phase
   currentPhase: 'pitch',
@@ -31,8 +30,8 @@ const useGameStore = create((set) => ({
       reputation: 5,
       bugs: 0,
       users: 0,
+      buzzwords: 0,  // <--- Reset too
+      metrics: 0,    // <--- Reset too
       currentPhase: 'pitch'
     })
 }));
-
-export default useGameStore;

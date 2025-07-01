@@ -11,11 +11,14 @@ const Stat = ({ icon, label, value, color }) => (
 );
 
 export default function HUD() {
-  const { funding, hype, reputation, bugs, users } = useGameStore();
+  const { funding, hype, reputation, bugs, users, currentPhase } = useGameStore();
 
   return (
     <div className="fixed top-0 left-0 w-full flex justify-between items-center px-6 py-3 bg-gray-900 text-white z-50 shadow-md">
-      <h1 className="text-xl font-bold">📱 Fake App Tycoon</h1>
+      <div className="flex items-center gap-4">
+        <h1 className="text-xl font-bold">📱 Fake App Tycoon</h1>
+        <span className="text-xs italic text-gray-300">Phase: {currentPhase.toUpperCase()}</span>
+      </div>
       <div className="flex gap-4">
         <Stat icon="💰" label="Funding" value={`$${funding}k`} color="text-green-400" />
         <Stat icon="📈" label="Hype" value={hype} color="text-purple-400" />
